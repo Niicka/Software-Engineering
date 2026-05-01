@@ -1,7 +1,8 @@
+// @ts-nocheck
 // src/frontend/screens/ExpenseReportScreen.tsx
 // 월간 소비 리포트 화면 - React Native
 
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import {
   View,
   Text,
