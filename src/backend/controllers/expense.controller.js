@@ -1,6 +1,7 @@
 // src/backend/controllers/expense.controller.js
 // 소비 내역 비즈니스 로직
 
+const { Op } = require("sequelize");
 const db = require("../models");
 const { analyzeImpulseSpending } = require("../../ai/impulseDetector");
 
@@ -22,7 +23,7 @@ exports.createExpense = async (req, res) => {
     });
 
     // 2. 예산 초과 여부 확인 → 알림 발송 (비동기, 응답 후 처리)
-    checkBudgetAndNotify(userId, category).catch(console.error);
+    checkBudgetAndNotify(userId).catch(console.error);
 
     // 3. AI 충동소비 탐지 (비동기)
     let aiAlert = { triggered: false };
@@ -77,11 +78,11 @@ exports.getExpenses = async (req, res) => {
     if (category) where.category = category;
     if (startDate || endDate) {
       where.spentAt = {};
-      if (startDate) where.spentAt["$gte"] = new Date(startDate);
+      if (startDate) where.spentAt[Op.gte] = new Date(startDate);
       if (endDate) {
         const end = new Date(endDate);
         end.setHours(23, 59, 59, 999);
-        where.spentAt["$lte"] = end;
+        where.spentAt[Op.lte] = end;
       }
     }
 
@@ -131,7 +132,7 @@ exports.getMonthlyReport = async (req, res) => {
 
     // 해당 월 전체 소비 내역 조회
     const expenses = await db.Expense.findAll({
-      where: { userId, spentAt: { "$between": [startDate, endDate] } },
+      where: { userId, spentAt: { [Op.between]: [startDate, endDate] } },
       order: [["spentAt", "ASC"]],
     });
 
@@ -168,7 +169,7 @@ exports.getMonthlyReport = async (req, res) => {
     const prevStartDate = new Date(year, month - 2, 1);
     const prevEndDate = new Date(year, month - 1, 0, 23, 59, 59, 999);
     const prevExpenses = await db.Expense.findAll({
-      where: { userId, spentAt: { "$between": [prevStartDate, prevEndDate] } },
+      where: { userId, spentAt: { [Op.between]: [prevStartDate, prevEndDate] } },
     });
     const prevTotal = prevExpenses.reduce((sum, e) => sum + e.amount, 0);
 
@@ -274,7 +275,7 @@ exports.deleteExpense = async (req, res) => {
 };
 
 // ─── 내부 헬퍼: 예산 초과 확인 및 알림 ──────────────────────────────────────
-async function checkBudgetAndNotify(userId, category) {
+async function checkBudgetAndNotify(userId) {
   const now = new Date();
   const budget = await db.Budget.findOne({
     where: { userId, year: now.getFullYear(), month: now.getMonth() + 1 },
