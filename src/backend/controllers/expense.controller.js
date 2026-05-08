@@ -208,6 +208,47 @@ exports.getMonthlyReport = async (req, res) => {
   }
 };
 
+// ─── 소비 내역 수정 ──────────────────────────────────────────────────────────
+exports.updateExpense = async (req, res) => {
+  const userId = req.user.id;
+  const { expenseId } = req.params;
+  const { amount, category, memo, spentAt } = req.body;
+
+  try {
+    const expense = await db.Expense.findOne({ where: { id: expenseId, userId } });
+    if (!expense) {
+      return res.status(404).json({
+        success: false,
+        error: { code: "NOT_FOUND", message: "소비 내역을 찾을 수 없습니다." },
+      });
+    }
+
+    await expense.update({
+      ...(amount !== undefined && { amount }),
+      ...(category !== undefined && { category }),
+      ...(memo !== undefined && { memo }),
+      ...(spentAt !== undefined && { spentAt: new Date(spentAt) }),
+    });
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        expenseId: expense.id,
+        amount: expense.amount,
+        category: expense.category,
+        memo: expense.memo,
+        spentAt: expense.spentAt,
+      },
+    });
+  } catch (error) {
+    console.error("[Expense] updateExpense 오류:", error);
+    return res.status(500).json({
+      success: false,
+      error: { code: "INTERNAL_ERROR", message: "소비 내역 수정에 실패했습니다." },
+    });
+  }
+};
+
 // ─── 소비 내역 삭제 ──────────────────────────────────────────────────────────
 exports.deleteExpense = async (req, res) => {
   const userId = req.user.id;
