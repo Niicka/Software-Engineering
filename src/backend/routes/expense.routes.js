@@ -82,6 +82,23 @@ router.get(
 );
 
 /**
+ * PATCH /expenses/:expenseId
+ * 소비 내역 수정
+ */
+router.patch(
+  "/:expenseId",
+  authenticate,
+  [
+    body("amount").optional().isInt({ min: 1 }).withMessage("금액은 1원 이상의 정수여야 합니다."),
+    body("category").optional().isIn(["식비", "쇼핑", "교통", "구독", "여가", "기타"]).withMessage("유효하지 않은 카테고리입니다."),
+    body("memo").optional().isLength({ max: 50 }).withMessage("메모는 최대 50자까지 입력 가능합니다."),
+    body("spentAt").optional().isISO8601().withMessage("올바른 날짜 형식(ISO8601)이 아닙니다."),
+  ],
+  handleValidationErrors,
+  expenseController.updateExpense
+);
+
+/**
  * DELETE /expenses/:expenseId
  * 소비 내역 삭제
  */
