@@ -4,6 +4,32 @@
 버전 규칙: v주.부.수 (Major.Minor.Patch)
 
 ---
+## v1.4.0 - 2026-05-13
+
+### Added
+- 과제4. 요구사항분석서 작성 완료 (`docs/requirements/요구사항 분석서.pdf`)
+    - 소프트웨어 문맥도 (Context Diagram) 작성
+    - 정적 분석: 주요 클래스 도출 (User, Expense, Budget, Challenge, UserChallenge, Point, Badge, AIAnalysis 등 12개 클래스)
+    - CRC 카드 작성 (8개 핵심 클래스의 책임·협력 관계 정의)
+    - 동적 분석:
+        - 유스케이스 기술서 (UC-001~004)
+        - 시퀀스 다이어그램: 소비 내역 저장 → 예산 알림 → AI 분석 14단계 흐름 정의
+        - 상태 다이어그램: UserChallenge (NONE→IN_PROGRESS→SUCCESS/FAILED/CANCELLED), Expense AI 탐지 상태 (PENDING→ANALYZING→FLAGGED/NORMAL/RULE_BASED)
+    - 인터페이스 분석: 화면 구성(SCR-001~050), 시스템 간 연계(IFC-001~006), 입출력 인터페이스
+    - 요구사항 추적표 (FR/NFR/IR → 관련 클래스·화면·구현 컴포넌트 매핑)
+- 챌린지 컨트롤러 구현 (`src/backend/controllers/challenge.controller.js`)
+    - 챌린지 목록 조회 (FR-030)
+    - 챌린지 참여: NONE → IN_PROGRESS 상태 전이, 중복 참여 방지 (FR-031)
+    - 참여 취소: IN_PROGRESS → CANCELLED (FR-031)
+    - 성공/실패 자동 판정: IN_PROGRESS → SUCCESS/FAILED, 진행률 계산 (FR-032)
+    - 성공 시 포인트 적립 및 FCM 알림 발송 (FR-033)
+
+### Changed
+- `docs/requirements/` 파일 명칭을 한국어 설명형으로 재정리
+    - `hw3_2024125039_이나경.pdf` → `요구사항 정의서.pdf`
+    - `hw2_2024125039_이나경.pdf` → `프로젝트 정의서.pdf`
+
+---
 ## v1.3.0 - 2026-05-13
 
 ### Added
