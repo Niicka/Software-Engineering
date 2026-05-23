@@ -4,6 +4,21 @@
 버전 규칙: v주.부.수 (Major.Minor.Patch)
 
 ---
+## v1.5.0 - 2026-05-23
+
+### Added
+- 예산 라우터 구현 (`src/backend/routes/budget.routes.js`)
+    - 전체 월 예산 설정 POST `/budgets` (FR-020, FR-024)
+    - 카테고리별 예산 설정 POST `/budgets/categories` (FR-021)
+    - 예산 현황 조회 GET `/budgets/status` (FR-022, FR-023)
+    - 예산 삭제 DELETE `/budgets/:year/:month`
+- 챌린지 라우터 구현 (`src/backend/routes/challenge.routes.js`)
+    - 챌린지 목록 조회 GET `/challenges` (FR-030)
+    - 내 챌린지 현황 조회 GET `/challenges/me` (FR-031)
+    - 챌린지 참여 POST `/challenges/:challengeId/join` (FR-031)
+    - 챌린지 취소 PATCH `/challenges/me/:userChallengeId/cancel` (FR-031)
+
+---
 ## v1.4.0 - 2026-05-13
 
 ### Added
