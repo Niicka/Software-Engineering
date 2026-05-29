@@ -4,6 +4,25 @@
 버전 규칙: v주.부.수 (Major.Minor.Patch)
 
 ---
+## v1.7.0 - 2026-05-29
+
+### Added
+- 사용자 인증 컨트롤러 구현 (`src/backend/controllers/user.controller.js`)
+    - 회원가입: 이메일 중복 체크, bcrypt 비밀번호 해싱, JWT 발급 (FR-001)
+    - 로그인: 이메일/비밀번호 검증, JWT 토큰 반환 (FR-002)
+    - 내 프로필 조회 (FR-003)
+    - 프로필 수정: 닉네임, 프로필 이미지 URL 변경 (FR-004)
+    - 비밀번호 변경: 현재 비밀번호 확인 후 갱신 (FR-005)
+    - 회원 탈퇴: 비밀번호 확인 후 계정 삭제 (FR-006)
+- 사용자 라우터 구현 (`src/backend/routes/user.routes.js`)
+    - 회원가입 POST `/users/register` (FR-001)
+    - 로그인 POST `/users/login` (FR-002)
+    - 프로필 조회 GET `/users/me` (FR-003)
+    - 프로필 수정 PATCH `/users/me` (FR-004)
+    - 비밀번호 변경 PATCH `/users/me/password` (FR-005)
+    - 회원 탈퇴 DELETE `/users/me` (FR-006)
+
+---
 ## v1.6.0 - 2026-05-25
 
 ### Added
