@@ -4,6 +4,29 @@
 버전 규칙: v주.부.수 (Major.Minor.Patch)
 
 ---
+## v1.8.0 - 2026-06-06
+
+### Added
+- 소비 내역 컨트롤러 구현 (`src/backend/controllers/expense.controller.js`)
+    - 소비 내역 등록: DB 저장 후 예산 초과 알림·AI 충동소비 탐지 비동기 처리 (FR-010)
+    - 소비 내역 목록 조회: 카테고리·날짜 필터링, 페이지네이션 지원 (FR-011)
+    - 월간 소비 리포트: 카테고리별 집계, 주차별 트렌드, 전월 비교, 예산 달성률 (FR-012~FR-016)
+    - 소비 내역 수정·삭제 (FR-010)
+- 소비 내역 라우터 구현 (`src/backend/routes/expense.routes.js`)
+    - 소비 등록 POST `/expenses` (FR-010)
+    - 목록 조회 GET `/expenses` (FR-011)
+    - 월간 리포트 GET `/expenses/report/monthly` (FR-012)
+    - 수정 PATCH `/expenses/:expenseId`
+    - 삭제 DELETE `/expenses/:expenseId`
+- AI 충동소비 탐지 모듈 구현 (`src/ai/impulse_detector.py`)
+    - 규칙 기반 + 통계적 분석 결합: 일평균 3배 초과·건당 평균 2배 초과·야간 고액 지출 탐지 (FR-050~FR-052)
+    - 카테고리별 개인화 절약 팁 및 대안 제시 (FR-053)
+    - Flask API 서버 (`/analyze`, `/health`) 구현
+- 월간 소비 리포트 화면 구현 (`src/frontend/screens/ExpenseReportScreen.tsx`)
+    - 예산 게이지 바, 카테고리별 바 차트, 주차별 트렌드 차트, 전월 비교 카드 (FR-012~FR-016)
+    - 월 네비게이터, Pull-to-Refresh, 에러 처리 포함
+
+---
 ## v1.7.0 - 2026-05-29
 
 ### Added
